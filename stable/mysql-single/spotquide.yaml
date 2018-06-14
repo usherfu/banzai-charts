@@ -1,0 +1,115 @@
+resources:
+  sumCpu: 1
+  sumMem: 10
+  sameSize: true
+  onDemandPct: 100
+  minNodes: 1
+  maxNodes: 1
+
+options:
+  - name: mysql_database_name
+    type: string
+    label: "Database Name"
+    info: "Specified mysql database name"
+    default: "database1"
+    key: mysql.database.name
+
+  - name: mysql_database_username
+    type: string
+    label: "Database User Name"
+    info: "Specified username to access to specified database"
+    default: "user"
+    key: mysql.database.name
+
+  - name: mysql_database_password
+    type: string
+    label: "Database Password"
+    info: "Specified username to access to specified database"
+    key: mysql.database.password
+
+  - name: mysql_root_password
+    type: string
+    label: "Mysql Root Password"
+    info: "Specified root user password"
+    key: mysql.cluster.root_password
+
+  - name: mysql_version
+    type: string
+    enum:
+      - 5.7
+      - 8.0
+    label: "Mysql version"
+    info: "Specified mysql version"
+    default: "5.7"
+    readonly: true
+    key: mysql.version
+
+  - name: phpmyadmin_version
+    type: string
+    enum:
+      - 4.7
+      - 4.8
+    label: "phpMyAdmin version"
+    info: "Specified phpMyAdmin version"
+    default: "4.8"
+    readonly: false
+    key: phpmysql.image.tag
+
+  - name: logging
+    type: boolean
+    label: "Logging support"
+    info: "Enable/Disable central and unified logging"
+    default: true
+    readonly: true
+    key: logging.enabled
+
+  - name: monitoring
+    type: boolean
+    label: "Logging support"
+    info: "Enable/Disable cluster monitoring"
+    default: true
+    readonly: true
+    key: monitoring.enabled
+
+secrets:
+  - name: mysql_credential -> .Release.Name-mysql_credential
+    label: "Logging support"
+    info: "Enable/Disable cluster monitoring"
+    readonly: true
+    password:
+      username: root
+      password: [randAlphaNum,randAlpha,randNumeric,randAscii],<length>
+
+depends:
+  - monitor:
+      info: Monitoring
+      type: crd
+      values: 
+          - prometheuses.monitoring.coreos.com
+          - servicemonitors.monitoring.coreos.com
+          - alertmanagers.monitoring.coreos.com
+      namespace: banzai-infra
+      charts:
+        - name: pipeline-cluster-monitor
+#          repository: alias:banzaicloud-stable
+          version: 0.0.1
+
+  - logging:
+      info: Logging
+      type: chart
+      namespace: banzai-infra
+      charts:
+        - name: pipeline-cluster-log
+#          repository: alias:banzaicloud-stable
+          version: 0.0.1
+
+  - mysql_operator:
+      info: Mysql Operator
+      type: crd
+      values:
+          - mysqlclusters.mysql.oracle.com
+      namespace: banzai-infra
+      charts:
+        - name: mysql-operator
+#          repository: alias:banzaicloud-stable
+          version: 0.2.0

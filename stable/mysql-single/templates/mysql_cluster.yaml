@@ -1,0 +1,21 @@
+apiVersion: mysql.oracle.com/v1alpha1
+kind: MySQLCluster
+metadata:
+  name: {{ default (include "mysql-single.fullname" .) .Values.mysql.cluster.name }}
+spec:
+  multiMaster: {{ default false .Values.mysql.cluster.multiMaster }}
+  replicas: {{ default 1 .Values.mysql.cluster.replicas }}
+  version: {{ .Values.mysql.cluster.version | quote }}
+  secretRef:
+    name: {{ template "mysql-single.fullname" . }}-root-password
+  volumeClaimTemplate:
+    metadata:
+      name: data
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: {{ .Values.mysql.database.size }}Gi
+  # configRef:
+  #   name: {{ template "mysql-single.fullname" . }}

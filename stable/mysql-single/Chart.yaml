@@ -1,0 +1,16 @@
+annotations:
+  displayName: Mysql Single With WebUI
+  longDescription: |
+    - MySQL is the world's most popular open-source database
+    - phpMyAdmin is one of the most popular applications for MySQL database management. It is a free tool written in PHP.
+
+apiVersion: v1
+appVersion: "1.0"
+description: MySQL is the world's most popular open-source database.
+name: mysql-single
+version: 0.1.0
+keywords:
+- MySQL
+- phpMyAdmin
+- database
+- spotguide

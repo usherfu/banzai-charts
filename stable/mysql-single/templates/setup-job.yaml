@@ -1,0 +1,151 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "mysql-single.fullname" . }}-create-db
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: {{ template "mysql-single.fullname" . }}-create-db
+        image: "banzaicloud/mysql-client:0.0.1"
+        env:
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "mysql-single.fullname" . }}-root-password
+                key: password
+        args:
+          - -h{{ printf "%s.%s.%s" .Values.mysql.cluster.name .Release.Namespace "svc.cluster.local" }}
+          - -e
+          - CREATE DATABASE {{ .Values.mysql.database.name }};
+---
+{{ if .Values.mysql.database.username }}
+{{ if .Values.mysql.database.password }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "mysql-single.fullname" . }}-create-user
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: {{ template "mysql-single.fullname" . }}-create-user
+        image: "banzaicloud/mysql-client:0.0.1"
+        env:
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "mysql-single.fullname" . }}-root-password
+                key: password
+        args:
+          - -h{{ printf "%s.%s.%s" .Values.mysql.cluster.name .Release.Namespace "svc.cluster.local" }}
+          - -e
+          - CREATE USER '{{ .Values.mysql.database.username }}'@'%' IDENTIFIED BY '{{ .Values.mysql.database.password }}';
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "mysql-single.fullname" . }}-grant-user
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: {{ template "mysql-single.fullname" . }}-grant-user
+        image: "banzaicloud/mysql-client:0.0.1"
+        env:
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "mysql-single.fullname" . }}-root-password
+                key: password
+        args:
+          - -h{{ printf "%s.%s.%s" .Values.mysql.cluster.name .Release.Namespace "svc.cluster.local" }}
+          - -e
+          - GRANT ALL PRIVILEGES ON {{ .Values.mysql.database.name }}.* TO '{{ .Values.mysql.database.username }}'@'%';
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "mysql-single.fullname" . }}-flush-privileges
+  labels:
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "15"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: {{ template "mysql-single.fullname" . }}-flush-privileges
+        image: "banzaicloud/mysql-client:0.0.1"
+        env:
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "mysql-single.fullname" . }}-root-password
+                key: password
+        args:
+          - -h{{ printf "%s.%s.%s" .Values.mysql.cluster.name .Release.Namespace "svc.cluster.local" }}
+          - -e
+          - FLUSH PRIVILEGES;
+{{ end }}
+{{ end }}

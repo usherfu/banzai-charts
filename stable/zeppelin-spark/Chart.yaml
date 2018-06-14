@@ -1,6 +1,11 @@
+annotations:
+  displayName: Zeppelin with Spark
+  longDescription: |
+    - Apache Zeppelin- Web-based notebook that enables data-driven, interactive data analytics and collaborative documents with SQL, Scala and more.
+    - Spark - Lightning-fast unified analytics engine
 name: zeppelin-spark
 version: 0.0.1
-description: A Helm chart for Kubernetes
+description: Web-based notebook that enables data-driven with Zeppelin and Spark
 home: https://banzaicloud.com
 sources:
   - https://github.com/banzaicloud/zeppelin
@@ -8,3 +13,5 @@ sources:
 keywords:
 - spark
 - zeppelin
+- spotguide
+- big-data

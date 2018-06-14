@@ -1,0 +1,47 @@
+{{- if .Values.phpmyadmin.enabled -}}
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "phpmyadmin.fullname" . }}
+  labels:
+    app: {{ template "phpmyadmin.name" . }}
+    chart: {{ template "mysql-single.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "phpmyadmin.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "phpmyadmin.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: phpmyadmin
+          image: {{ .Values.phpmyadmin.image.repository }}:{{ .Values.phpmyadmin.image.tag }}
+          imagePullPolicy: {{ .Values.phpmyadmin.image.pullPolicy }}
+
+          envFrom: 
+          - secretRef:
+            name: {{ template "phpmyadmin.fullname" . }}-phpmyadmin
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+{{- end }}

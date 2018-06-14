@@ -1,0 +1,24 @@
+mysql:
+  database:
+    name: database-name
+    username: user
+    password: password
+    size: 10
+
+  cluster:
+    name: your-cluster-name
+    multiMaster: false
+    replicas: 1
+    root_password: ""
+    version: 5.7
+
+phpmyadmin:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: phpmyadmin/phpmyadmin
+    tag: 4.8.1
+    ## Specify a imagePullPolicy
+    pullPolicy: IfNotPresent
+  control_user: control_user
+  control_password: ""

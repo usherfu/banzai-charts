@@ -1,27 +1,12 @@
 resources:
-  sumCpu: 10
-  sumMem: 32
+  sumCpu: 19
+  sumMem: 64
   sameSize: true
   onDemandPct: 100
-  minNodes: 3
-  maxNodes: 8
+  minNodes: 5
+  maxNodes: 10
 
 options:
-  - name: spark_version
-    type: string
-    enum:
-      - 2.2
-    info: "Specified spark version"
-    default: "2.2"
-    readonly: true
-    key: spark.image.version
-
-  - name: "History Server"
-    type: boolean
-    info: "Enable Spark History server."
-    default: true
-    key: historyServer.enabled
-
   - name: logging
     type: boolean
     label: "Logging support"
@@ -32,11 +17,20 @@ options:
 
   - name: monitoring
     type: boolean
-    label: "Monitoring support"
+    label: "Monitoringsupport"
     info: "Enable/Disable cluster monitoring"
     default: true
     readonly: true
     key: monitoring.enabled
+
+secrets:
+  - name: mysql_credential -> .Release.Name-mysql_credential
+    label: "Logging support"
+    info: "Enable/Disable cluster monitoring"
+    readonly: true
+    password:
+      username: root
+      password: [randAlphaNum,randAlpha,randNumeric,randAscii],<length>
 
 depends:
   - monitor:
@@ -60,3 +54,14 @@ depends:
         - name: pipeline-cluster-log
 #          repository: alias:banzaicloud-stable
           version: 0.0.1
+
+  - mysql_operator:
+      info: Mysql Operator
+      type: crd
+      values:
+          - mysqlclusters.mysql.oracle.com
+      namespace: banzai-infra
+      charts:
+        - name: mysql-operator
+#          repository: alias:banzaicloud-stable
+          version: 0.2.0
