@@ -1,0 +1,85 @@
+resources:
+  sumCpu: 1
+  sumMem: 10
+  sameSize: true
+  onDemandPct: 100
+  minNodes: 1
+  maxNodes: 1
+
+options:
+  - name: ui
+    type: boolean
+    label: "UI"
+    info: "Enable/Disable Fn UI Dashboard"
+    default: true
+    readonly: true
+    key: fn.ui.enabled
+
+  - name: ui_version
+    type: string
+    enum:
+      - "0.0.26"
+      - "0.0.25"
+      - "0.0.24"
+    label: "UI version"
+    info: "Specified ui version"
+    default: "0.0.26"
+    readonly: false
+    key: ui.fnui.tag
+
+  - name: lb_version
+    type: string
+    enum:
+      - "0.0.268"
+      - "0.0.267"
+      - "0.0.266"
+    label: "Fn LB version"
+    info: "Fn loadbalancer version"
+    default: "0.0.268"
+    readonly: false
+    key: fnlb.tag
+
+  - name: flow_version
+    type: string
+    enum:
+      - "0.1.84"
+      - "0.1.83"
+      - "0.1.82"
+    label: "Fn Flow version"
+    info: "Fn Flow version"
+    default: "0.1.84"
+    readonly: false
+    key: fnlb.tag
+
+  - name: mysql_persistence
+    type: boolean
+    label: "Mysql data persistence"
+    info: "Store Mysql data on persistence storage"
+    default: true
+    readonly: true
+    key: fn.mysql.persistence
+
+  - name: redis_persistence
+    type: boolean
+    label: "Redis data persistence"
+    info: "Store Redis data on persistence storage"
+    default: true
+    readonly: true
+    key: fn.redis.persistence
+
+
+  - name: logging
+    type: boolean
+    label: "Logging"
+    info: "Enable/Disable central and unified logging"
+    default: true
+    readonly: true
+    key: logging.enabled
+
+  - name: monitoring
+    type: boolean
+    label: "Monitoring"
+    info: "Enable/Disable cluster monitoring"
+    default: true
+    readonly: true
+    key: logging.enabled
