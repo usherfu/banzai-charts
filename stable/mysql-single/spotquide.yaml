@@ -71,45 +71,33 @@ options:
     readonly: true
     key: monitoring.enabled
 
-secrets:
-  - name: mysql_credential -> .Release.Name-mysql_credential
-    label: "Logging support"
-    info: "Enable/Disable cluster monitoring"
-    readonly: true
-    password:
-      username: root
-      password: [randAlphaNum,randAlpha,randNumeric,randAscii],<length>
-
 depends:
-  - monitor:
-      info: Monitoring
-      type: crd
-      values: 
-          - prometheuses.monitoring.coreos.com
-          - servicemonitors.monitoring.coreos.com
-          - alertmanagers.monitoring.coreos.com
-      namespace: banzai-infra
-      charts:
-        - name: pipeline-cluster-monitor
-#          repository: alias:banzaicloud-stable
-          version: 0.0.1
+  - name: monitor
+    info: Monitoring
+    type: crd
+    values:
+        - prometheuses.monitoring.coreos.com
+        - servicemonitors.monitoring.coreos.com
+        - alertmanagers.monitoring.coreos.com
+    namespace: banzai-infra
+    chart:
+      name: pipeline-cluster-monitor
+      version: 0.0.1
 
-  - logging:
-      info: Logging
-      type: chart
-      namespace: banzai-infra
-      charts:
-        - name: pipeline-cluster-log
-#          repository: alias:banzaicloud-stable
-          version: 0.0.1
+  - name: logging
+    info: Logging
+    type: chart
+    namespace: banzai-infra
+    chart:
+      name: pipeline-cluster-log
+      version: 0.0.1
 
-  - mysql_operator:
-      info: Mysql Operator
-      type: crd
-      values:
-          - mysqlclusters.mysql.oracle.com
-      namespace: banzai-infra
-      charts:
-        - name: mysql-operator
-#          repository: alias:banzaicloud-stable
-          version: 0.2.0
+  - name: mysql_operator
+    info: Mysql Operator
+    type: crd
+    values:
+        - mysqlclusters.mysql.oracle.com
+    namespace: banzai-infra
+    chart:
+      name: mysql-operator
+      version: 0.2.0
