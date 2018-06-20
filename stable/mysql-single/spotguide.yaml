@@ -6,6 +6,11 @@ resources:
   minNodes: 1
   maxNodes: 1
 
+secrets:
+  - name: mysql-tls
+    tls:
+      hosts: banzai.example.com
+
 options:
   - name: mysql_database_name
     type: string
