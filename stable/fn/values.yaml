@@ -17,8 +17,8 @@ fnlb:
   resources: {}
 
 fnserver:
-  image: fnproject/fnserver
-  tag: 0.3.461
+  image: banzaicloud/fnserver
+  tag: 0.3.461auth
   logLevel: info
   resources: {}
   nodeSelector: {}

@@ -46,6 +46,13 @@ spec:
           value: {{ .Values.fnserver.logLevel }}
         - name: FN_PORT
           value: "80"
+        - name: SIMPLE_SECRET
+          value: "secret31"
+        - name: MASTER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-fn
+              key: masterToken
         - name: FN_DB_PASSWD
           valueFrom:
             secretKeyRef:
