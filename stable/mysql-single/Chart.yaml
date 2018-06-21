@@ -4,6 +4,7 @@ annotations:
     - MySQL is the world's most popular open-source database
     - phpMyAdmin is one of the most popular applications for MySQL database management. It is a free tool written in PHP.
 
+icon: https://beta.dev.banzaicloud.com/ui/assets/images/mysql.svg
 apiVersion: v1
 appVersion: "1.0"
 description: MySQL is the world's most popular open-source database.
