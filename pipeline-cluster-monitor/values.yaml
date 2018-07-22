@@ -2,6 +2,31 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+grafana:
+  enabled: true
+  sidecar:
+    dashboards:
+      enabled: true
+
+  # Pass the plugins you want installed as a comma separated list.
+  # plugins: "digrich-bubblechart-panel,grafana-clock-panel"
+  plugins: "mtanda-histogram-panel"
+
+  ## Configure grafana datasources
+  ## ref: http://docs.grafana.org/administration/provisioning/#datasources
+  ##
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: prometheus
+        type: prometheus
+        url: http://prometheus-server:80/prometheus
+  #      url: http://prometheus-prometheus-server
+        access: proxy
+        isDefault: true
+
+
 prometheus:
   rbac:
     create: true
