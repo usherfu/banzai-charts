@@ -14,7 +14,7 @@ data:
     datasources:
     - name: prometheus
       type: prometheus
-      url: http://{{ .Release.Name }}-prometheus-server:80
+      url: http://{{ .Release.Name }}-prometheus-server:80/prometheus
       access: proxy
       isDefault: true
 #    restartPolicy: OnFailure
