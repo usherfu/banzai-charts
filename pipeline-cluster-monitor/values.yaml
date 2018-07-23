@@ -7,6 +7,8 @@ grafana:
   sidecar:
     dashboards:
       enabled: true
+    datasources:
+      enabled: true
 
   # Pass the plugins you want installed as a comma separated list.
   # plugins: "digrich-bubblechart-panel,grafana-clock-panel"
@@ -15,16 +17,16 @@ grafana:
   ## Configure grafana datasources
   ## ref: http://docs.grafana.org/administration/provisioning/#datasources
   ##
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: prometheus
-        type: prometheus
-        url: http://prometheus-server:80/prometheus
-  #      url: http://prometheus-prometheus-server
-        access: proxy
-        isDefault: true
+#  datasources:
+#    datasources.yaml:
+#      apiVersion: 1
+#      datasources:
+#      - name: prometheus
+#        type: prometheus
+#        url: http://prometheus-server:80/prometheus
+#  #      url: http://prometheus-prometheus-server
+#        access: proxy
+#        isDefault: true
 
 
 prometheus:
