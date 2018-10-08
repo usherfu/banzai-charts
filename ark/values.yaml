@@ -20,9 +20,6 @@ rbac:
 resources: {}
 
 serviceAccount:
-  hook:
-    create: true
-    name:
   server:
     create: true
     name:
@@ -34,15 +31,15 @@ nodeSelector: {}
 ## Parameters for the ' default' Config resource
 ## See https://heptio.github.io/ark/v0.9.0/config-definition
 configuration:
-  persistentVolumeProvider: {}
-  #  name:
-  #  config:
-  #    region:
-  #    apiTimeout:
+  persistentVolumeProvider:
+    name: azure
+    config:
+    #  region:
+      apiTimeout: 10s
 
   backupStorageProvider:
-    name:
-    bucket:
+    name: aws
+    bucket: ark-backup-bucket-123
     config: {}
     #  region:
     #  s3ForcePathStyle:
