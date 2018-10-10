@@ -19,5 +19,5 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Create a random password for mysql.
 */}}
 {{- define "mysql.password" -}}
-{{- default (derivePassword 1 "long" (.Release.Time | toString) "bonanzabanzai" (print .Release.Name "-pipeline-db:3306") | b64enc ) .Values.mysql.mysqlPassword -}}
+{{- default (derivePassword 1 "long" (.Release.Time | toString) "bonanzabanzai" (print .Release.Name "-pipeline-db:3306") | b64enc ) .Values.global.mysqlPassword -}}
 {{- end -}}
