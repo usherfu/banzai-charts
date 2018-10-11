@@ -12,6 +12,10 @@ github:
 
 replicaCount: 1
 
+debug:
+  enable: false
+  port: 40000
+
 image:
   repository: banzaicloud/pipeline
   tag: latest

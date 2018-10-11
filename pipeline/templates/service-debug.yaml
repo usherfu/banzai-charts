@@ -1,0 +1,20 @@
+{{- if .Values.debug.enabled  }}
+  apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ template "fullname" . }}-debug"
+  labels:
+    app: "{{ template "fullname" . }}-debug"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  clusterIP: None
+  ports:
+  - port: {{ .Values.debug.port }}
+    targetPort: {{ .Values.debug.port }}
+    protocol: TCP
+    name: "{{ .Values.service.name }}-debug"
+  selector:
+    app: {{ template "fullname" . }}
+{{ end }}

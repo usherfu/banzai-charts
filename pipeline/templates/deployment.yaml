@@ -159,6 +159,9 @@ spec:
 
         ports:
         - containerPort: {{ .Values.service.internalPort }}
+          {{- if .Values.debug.enabled  }}
+        - containerPort: {{ .Values.debug.port }}
+          {{ end }}
         livenessProbe:
           httpGet:
             path: {{ .Values.global.pipelineBasepath }}/api
