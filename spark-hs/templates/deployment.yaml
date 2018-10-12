@@ -57,6 +57,7 @@ spec:
           - name: SPARK_HISTORY_OPTS
             value: >-
               -Dspark.history.fs.logDirectory={{ .Values.app.logDirectory }}
+              -Dspark.hadoop.fs.s3a.endpoint="https://oss-eu-central-1.aliyuncs.com"
         {{- if eq $schema "gs" }}
           - name: GOOGLE_APPLICATION_CREDENTIALS
             value: /opt/spark/conf/google.json
