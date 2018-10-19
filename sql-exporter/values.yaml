@@ -53,6 +53,11 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+annotations:
+  prometheus.io/scrape:
+  prometheus.io/path:
+  prometheus.io/port: 9399
+
 nodeSelector: {}
 
 tolerations: []
