@@ -48,8 +48,8 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
          - name: config-volume
-            configMap:
-              name: {{ include "sql-exporter.fullname" . }}
+           configMap:
+             name: {{ include "sql-exporter.fullname" . }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
