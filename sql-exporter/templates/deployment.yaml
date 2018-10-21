@@ -28,7 +28,7 @@ spec:
              /bin/sql_exporter \
              -config.file {{ .Values.configDir }}/{{ .Values.configFile }} \
              -web.listen-address {{ .Values.listenAddress }}\
-             -web.telemetry-path {{ .Values.metricsPath }}\
+             -web.telemetry-path {{ .Values.metricsPath }}
           ports:
             - name: http
               containerPort: {{ .Values.listenAddress }}

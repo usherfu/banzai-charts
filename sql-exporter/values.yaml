@@ -54,8 +54,8 @@ resources: {}
   #  memory: 128Mi
 
 annotations:
-  prometheus.io/scrape:
-  prometheus.io/path:
+  prometheus.io/scrape: true
+  prometheus.io/path: /metrics
   prometheus.io/port: 9399
 
 nodeSelector: {}
