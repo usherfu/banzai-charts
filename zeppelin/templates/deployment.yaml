@@ -78,8 +78,8 @@ spec:
           - name: config-init-volume
             mountPath: /opt/zeppelin/conf/shiro.ini.template
             subPath: shiro.ini.template
-          - name: spark-config-init-volume
-            mountPath: /opt/spsrk/conf
+          - name: spark-config-volume
+            mountPath: /opt/spark/conf
           - name: zeppelin-site-config-volume
             mountPath: /opt/zeppelin/conf/zeppelin-site.xml
             subPath: zeppelin-site.xml
@@ -88,7 +88,7 @@ spec:
             subPath: interpreter.json
           - name: config-volume
             mountPath: /opt/zeppelin/prepared_conf
-          - name: spark-config-volume
+          - name: spark-config-init-volume
             mountPath: /opt/spark/prepared_conf
       containers:
       - name: {{ .Chart.Name }}
