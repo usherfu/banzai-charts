@@ -25,7 +25,7 @@ data:
     spark.local.dir={{ .Values.sparkSubmitOptions.sparkLocalDir }}
     spark.kubernetes.authenticate.driver.serviceAccountName={{ .Values.sparkSubmitOptions.driverServiceAccountName }}
     {{- if .Values.sparkEventLogStorage.logDirectory }}
-    spark.eventLog.dir={{ include "logDirectoryTag" }}
+    spark.eventLog.dir={{ template "logDirectoryTag" }}
     spark.eventLog.enabled=true
     {{- if eq $schema "amazon" }}
     spark.hadoop.fs.s3.awsAccessKeyId=$AWS_ACCESS_KEY_ID
