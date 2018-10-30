@@ -15,8 +15,8 @@ data:
     spark.metrics.conf={{ .Values.sparkSubmitOptions.sparkMetricsConf }}
     spark.local.dir={{ .Values.sparkSubmitOptions.sparkLocalDir }}
     spark.kubernetes.authenticate.driver.serviceAccountName={{ .Values.sparkSubmitOptions.driverServiceAccountName }}
-    {{- if .Values.sparkEventLogStorage.eventLogDirectory }}
-    spark.eventLog.dir={{ .Values.sparkEventLogStorage.eventLogDirectory }}
+    {{- if .Values.sparkEventLogStorage.logDirectory }}
+    spark.eventLog.dir={{ .Values.sparkEventLogStorage.logDirectory }}
     spark.eventLog.enabled=true
     {{- if eq $schema "amazon" }}
     spark.hadoop.fs.s3.awsAccessKeyId=$AWS_ACCESS_KEY_ID
