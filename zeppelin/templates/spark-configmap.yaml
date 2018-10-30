@@ -1,3 +1,12 @@
+{{- define "logDirectoryTag" }}
+  {{- if eq .Values.app.cloudProvider "amazon"}}
+    {{- printf "s3a://%s" .Values.app.logDirectory }}
+  {{- else if eq .Values.app.cloudProvider "azure"}}
+    {{- printf "wasb://%s@%s.blob.core.windows.net" .Values.app.logDirectory .Values.app.azureStorageAccountName }}
+  {{- else if eq .Values.app.cloudProvider "google"}}
+    {{- printf "gs://%s" .Values.app.logDirectory }}
+  {{- end }}
+{{- end }}
 {{- $schema := .Values.sparkEventLogStorage.cloudProvider }}
 kind: ConfigMap
 apiVersion: v1
@@ -16,7 +25,7 @@ data:
     spark.local.dir={{ .Values.sparkSubmitOptions.sparkLocalDir }}
     spark.kubernetes.authenticate.driver.serviceAccountName={{ .Values.sparkSubmitOptions.driverServiceAccountName }}
     {{- if .Values.sparkEventLogStorage.logDirectory }}
-    spark.eventLog.dir={{ .Values.sparkEventLogStorage.logDirectory }}
+    spark.eventLog.dir={{ include "logDirectoryTag" }}
     spark.eventLog.enabled=true
     {{- if eq $schema "amazon" }}
     spark.hadoop.fs.s3.awsAccessKeyId=$AWS_ACCESS_KEY_ID
