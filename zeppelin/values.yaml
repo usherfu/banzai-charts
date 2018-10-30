@@ -5,7 +5,7 @@ replicaCount: 1
 
 image:
   repository: banzaicloud/zeppelin-server
-  tag: v0.9.0-k8s-1.0.48
+  tag: v0.9.0-k8s-1.0.56
   pullPolicy: IfNotPresent
 
 resources:
@@ -69,18 +69,11 @@ sparkSubmitOptions:
   sparkDriverLimitCores: 2
   sparkExecutorCores: 1
   sparkDriverMemory: 4G
-  sparkExcutorMemory: 2G
+  sparkExecutorMemory: 2G
   sparkMetricsConf: /opt/spark/conf/metrics.properties
-  dynamicAllocation: true
-  shuffleService: true
-  shuffleNameSpace: default
-  shuffleLabels: app=spark-shuffle,spark-version=2.2.0,release="{{ .Release.Name }}"
-  DriverImage: banzaicloud/spark-driver-py:v2.2.1-k8s-1.0.35
-  ExecutorImage: banzaicloud/spark-executor-py:v2.2.1-k8s-1.0.35
-  initContainerImage: banzaicloud/spark-init:v2.2.1-k8s-1.0.35
-  resourceStagingServerInt: spark-rss:10000
-  resourceStagingServerExt: spark-rss:10000
+  dynamicAllocation: false
+  shuffleService: false
+  sparkImage: banzaicloud/zeppelin-server:v0.9.0-k8s-1.0.56
   sparkLocalDir: /tmp/spark-local
   eventLogDirectory: ""
   driverServiceAccountName: "spark"
-  log4jConfigPath: "file:///var/spark-data/spark-files/log4j_k8s_cluster.properties"

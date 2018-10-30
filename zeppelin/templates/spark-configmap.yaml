@@ -1,0 +1,30 @@
+{{- $schema := .Values.sparkEventLogStorage.cloudProvider }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "fullname" . }}-spark-config
+data:
+  spark-defaults.conf: |-
+    spark.kubernetes.namespace={{ .Values.sparkSubmitOptions.k8sNameSpace }}
+    spark.driver.cores={{ .Values.sparkSubmitOptions.sparkDriverCores }}
+    spark.kubernetes.driver.limit.cores={{ .Values.sparkSubmitOptions.sparkDriverLimitCores }}
+    spark.executor.cores={{ .Values.sparkSubmitOptions.sparkExecutorCores }}
+    spark.driver.memory={{ .Values.sparkSubmitOptions.sparkDriverMemory }}
+    spark.executor.memory={{ .Values.sparkSubmitOptions.sparkExecutorMemory }}
+    spark.kubernetes.container.image={{ .Values.sparkSubmitOptions.sparkImage }}
+    spark.metrics.conf={{ .Values.sparkSubmitOptions.sparkMetricsConf }}
+    spark.local.dir={{ .Values.sparkSubmitOptions.sparkLocalDir }}
+    spark.kubernetes.authenticate.driver.serviceAccountName={{ .Values.sparkSubmitOptions.driverServiceAccountName }}
+    {{- if .Values.sparkEventLogStorage.eventLogDirectory }}
+    spark.eventLog.dir={{ .Values.sparkEventLogStorage.eventLogDirectory }}
+    spark.eventLog.enabled=true
+    {{- if eq $schema "amazon" }}
+    spark.hadoop.fs.s3.awsAccessKeyId=$AWS_ACCESS_KEY_ID
+    spark.hadoop.fs.s3.awsSecretAccessKey=$AWS_SECRET_ACCESS_KEY
+    {{- else if eq $schema "azure" }}
+    spark.hadoop.fs.azure.account.key.$AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net=$AZURE_STORAGE_ACCESS_KEY
+    {{- else if eq $schema "google" }}
+    spark.hadoop.google.cloud.auth.service.account.enable=true
+    spark.hadoop.google.cloud.auth.service.account.json.keyfile=/opt/spark/conf/google.json
+    {{- end }}
+    {{- end }}
